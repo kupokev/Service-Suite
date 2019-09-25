@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29318.209
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicePortal", "ServicePortal\ServicePortal.csproj", "{F88FBE69-A48A-42F2-B82F-A04AF398842E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicePortal.Data", "ServicePortal.Data\ServicePortal.Data.csproj", "{1FD2CACA-DE6C-43E3-8D37-4A9C5A2FFC14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F88FBE69-A48A-42F2-B82F-A04AF398842E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F88FBE69-A48A-42F2-B82F-A04AF398842E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F88FBE69-A48A-42F2-B82F-A04AF398842E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F88FBE69-A48A-42F2-B82F-A04AF398842E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FD2CACA-DE6C-43E3-8D37-4A9C5A2FFC14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FD2CACA-DE6C-43E3-8D37-4A9C5A2FFC14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FD2CACA-DE6C-43E3-8D37-4A9C5A2FFC14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FD2CACA-DE6C-43E3-8D37-4A9C5A2FFC14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A9258A14-F79F-47D8-A1CF-2E433ECCA52B}
+	EndGlobalSection
+EndGlobal
