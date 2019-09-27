@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ServicePortal.Data.Models.Entity;
+using ServiceSuite.Data.Models;
 
-namespace ServicePortal.Data.Contexts
+namespace ServiceSuite.Data.Contexts
 {
-    public class MainModelDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
+    public class MainContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
-        public MainModelDbContext(DbContextOptions<MainModelDbContext> options)
+        public MainContext(DbContextOptions<MainContext> options)
         : base(options)
         {
         }
@@ -71,7 +71,7 @@ namespace ServicePortal.Data.Contexts
                     .HasForeignKey(ur => ur.UserId)
                     .IsRequired();
             });
-            
+
             modelBuilder.Entity<ApplicationRole>(b =>
             {
                 b.ToTable("ApplicationRole");
@@ -88,9 +88,18 @@ namespace ServicePortal.Data.Contexts
                     .HasForeignKey(rc => rc.RoleId)
                     .IsRequired();
             });
+
+            modelBuilder.Entity<TicketChangeLog>(b =>
+            {
+                b.HasKey(x => new { x.ChangeKey, x.TicketId });
+            });
         }
 
         // Custom Entities
+        public DbSet<ApplicationEnum> ApplicationEnums { get; set; }
+
         public DbSet<Ticket> Tickets { get; set; }
+
+        public DbSet<TicketChangeLog> TicketChangeLogs { get; set; }
     }
 }

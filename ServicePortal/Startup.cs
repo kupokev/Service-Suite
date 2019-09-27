@@ -7,9 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServicePortal.Areas.Identity;
-using ServicePortal.Data;
-using ServicePortal.Data.Contexts;
-using ServicePortal.Data.Models.Entity;
+using ServiceSuite.Data.Contexts;
+using ServiceSuite.Data.Models;
+using ServiceSuite.Interfaces;
+using ServiceSuite.Services;
 
 namespace ServicePortal
 {
@@ -26,19 +27,25 @@ namespace ServicePortal
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MainModelDbContext>(options =>
+            services.AddDbContext<MainContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<MainModelDbContext>()
+                .AddEntityFrameworkStores<MainContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-            services.AddSingleton<WeatherForecastService>();
+
+            // Core services
+            services.AddSingleton<IEnumService, EnumService>();
+
+            // Helpdesk Services
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

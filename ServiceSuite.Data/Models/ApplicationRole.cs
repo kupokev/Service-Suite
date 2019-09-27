@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
-namespace ServicePortal.Data.Models.Entity
+namespace ServiceSuite.Data.Models
 {
     public class ApplicationRole : IdentityRole<int>
     {

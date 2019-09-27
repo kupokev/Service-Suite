@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace ServicePortal.Data.Models.Entity
+namespace ServiceSuite.Data.Models
 {
     public class ApplicationRoleClaim : IdentityRoleClaim<int>
     {

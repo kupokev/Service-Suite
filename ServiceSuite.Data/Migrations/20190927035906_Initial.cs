@@ -1,12 +1,29 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ServicePortal.Data.Migrations
+namespace ServiceSuite.Data.Migrations
 {
     public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "ApplicationEnums",
+                columns: table => new
+                {
+                    ApplicationEnumId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Category = table.Column<string>(nullable: true),
+                    SubCategory = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Value = table.Column<string>(nullable: true),
+                    ValueType = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApplicationEnums", x => x.ApplicationEnumId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ApplicationRole",
                 columns: table => new
@@ -49,11 +66,43 @@ namespace ServicePortal.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TicketChangeLogs",
+                columns: table => new
+                {
+                    ChangeKey = table.Column<Guid>(nullable: false),
+                    TicketId = table.Column<int>(nullable: false),
+                    Priority = table.Column<int>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    AssignedUserId = table.Column<int>(nullable: true),
+                    CreatedById = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: true),
+                    DueDate = table.Column<DateTime>(nullable: true),
+                    Note = table.Column<string>(nullable: true),
+                    TicketNoteType = table.Column<int>(nullable: false),
+                    ChangeTime = table.Column<DateTime>(nullable: false),
+                    ChangeUserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketChangeLogs", x => new { x.ChangeKey, x.TicketId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tickets",
                 columns: table => new
                 {
                     TicketId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Priority = table.Column<int>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    AssignedUserId = table.Column<int>(nullable: true),
+                    CreatedById = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: true),
+                    DueDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -223,6 +272,9 @@ namespace ServicePortal.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ApplicationEnums");
+
+            migrationBuilder.DropTable(
                 name: "ApplicationRoleClaim");
 
             migrationBuilder.DropTable(
@@ -236,6 +288,9 @@ namespace ServicePortal.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ApplicationUserToken");
+
+            migrationBuilder.DropTable(
+                name: "TicketChangeLogs");
 
             migrationBuilder.DropTable(
                 name: "Tickets");

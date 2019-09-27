@@ -3,24 +3,24 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace ServicePortal.Data.Contexts
+namespace ServiceSuite.Data.Contexts
 {
-    public class MainModelDbContextFactory : IDesignTimeDbContextFactory<MainModelDbContext>
+    public class MainContextFactory : IDesignTimeDbContextFactory<MainContext>
     {
-        public MainModelDbContext CreateDbContext(string[] args)
+        public MainContext CreateDbContext(string[] args)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var builder = new DbContextOptionsBuilder<MainModelDbContext>();
+            var builder = new DbContextOptionsBuilder<MainContext>();
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             builder.UseSqlServer(connectionString);
 
-            return new MainModelDbContext(builder.Options);
+            return new MainContext(builder.Options);
         }
     }
 }

@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ServicePortal.Data.Contexts;
+using ServiceSuite.Data.Contexts;
 
-namespace ServicePortal.Data.Migrations
+namespace ServiceSuite.Data.Migrations
 {
-    [DbContext(typeof(MainModelDbContext))]
-    [Migration("20190925035333_Initial")]
+    [DbContext(typeof(MainContext))]
+    [Migration("20190927035906_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,7 +130,34 @@ namespace ServicePortal.Data.Migrations
                     b.ToTable("ApplicationUserToken");
                 });
 
-            modelBuilder.Entity("ServicePortal.Data.Models.Entity.ApplicationRole", b =>
+            modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationEnum", b =>
+                {
+                    b.Property<int>("ApplicationEnumId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubCategory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ValueType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ApplicationEnumId");
+
+                    b.ToTable("ApplicationEnums");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -159,7 +186,7 @@ namespace ServicePortal.Data.Migrations
                     b.ToTable("ApplicationRole");
                 });
 
-            modelBuilder.Entity("ServicePortal.Data.Models.Entity.ApplicationUser", b =>
+            modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -226,19 +253,92 @@ namespace ServicePortal.Data.Migrations
                     b.ToTable("ApplicationUser");
                 });
 
-            modelBuilder.Entity("ServicePortal.Data.Models.Entity.Ticket", b =>
+            modelBuilder.Entity("ServiceSuite.Data.Models.Ticket", b =>
                 {
                     b.Property<int>("TicketId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("AssignedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
                     b.HasKey("TicketId");
 
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("ServicePortal.Data.Models.Entity.ApplicationRoleClaim", b =>
+            modelBuilder.Entity("ServiceSuite.Data.Models.TicketChangeLog", b =>
+                {
+                    b.Property<Guid>("ChangeKey")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AssignedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ChangeTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ChangeUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TicketNoteType")
+                        .HasColumnType("int");
+
+                    b.HasKey("ChangeKey", "TicketId");
+
+                    b.ToTable("TicketChangeLogs");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationRoleClaim", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>");
 
@@ -247,7 +347,7 @@ namespace ServicePortal.Data.Migrations
                     b.HasDiscriminator().HasValue("ApplicationRoleClaim");
                 });
 
-            modelBuilder.Entity("ServicePortal.Data.Models.Entity.ApplicationUserRole", b =>
+            modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationUserRole", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<int>");
 
@@ -263,7 +363,7 @@ namespace ServicePortal.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("ServicePortal.Data.Models.Entity.ApplicationUser", null)
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationUser", null)
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -272,7 +372,7 @@ namespace ServicePortal.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("ServicePortal.Data.Models.Entity.ApplicationUser", null)
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationUser", null)
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -281,37 +381,37 @@ namespace ServicePortal.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("ServicePortal.Data.Models.Entity.ApplicationUser", null)
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationUser", null)
                         .WithMany("Tokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ServicePortal.Data.Models.Entity.ApplicationRoleClaim", b =>
+            modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationRoleClaim", b =>
                 {
-                    b.HasOne("ServicePortal.Data.Models.Entity.ApplicationRole", "Role")
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationRole", "Role")
                         .WithMany("RoleClaims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ServicePortal.Data.Models.Entity.ApplicationUserRole", b =>
+            modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationUserRole", b =>
                 {
-                    b.HasOne("ServicePortal.Data.Models.Entity.ApplicationRole", "Role")
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationRole", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServicePortal.Data.Models.Entity.ApplicationUser", null)
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationUser", null)
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServicePortal.Data.Models.Entity.ApplicationUser", "User")
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId1");
                 });
