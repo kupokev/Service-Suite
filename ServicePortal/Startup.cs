@@ -41,6 +41,7 @@ namespace ServicePortal
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
             // Core services
+            services.AddTransient<IApplicationEnumService, ApplicationEnumService>();
             services.AddSingleton<IEnumService, EnumService>();
 
             // Helpdesk Services

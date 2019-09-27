@@ -22,5 +22,21 @@ namespace ServiceSuite.Data.Contexts
 
             return new MainContext(builder.Options);
         }
+
+        public MainContext CreateDbContext()
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var builder = new DbContextOptionsBuilder<MainContext>();
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            builder.UseSqlServer(connectionString);
+
+            return new MainContext(builder.Options);
+        }
     }
 }
