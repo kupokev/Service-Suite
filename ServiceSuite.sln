@@ -7,9 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicePortal", "ServicePor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceSuite.Data", "ServiceSuite.Data\ServiceSuite.Data.csproj", "{1FD2CACA-DE6C-43E3-8D37-4A9C5A2FFC14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceSuite.Helpdesk", "ServiceSuite.Helpdesk\ServiceSuite.Helpdesk.csproj", "{F58E072E-D8EE-4253-AA61-766EE418F0CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceSuite.Helpdesk", "ServiceSuite.Helpdesk\ServiceSuite.Helpdesk.csproj", "{F58E072E-D8EE-4253-AA61-766EE418F0CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceSuite", "ServiceSuite\ServiceSuite.csproj", "{20273F0B-027F-46AE-96E3-F6FE6BAEAACB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceSuite", "ServiceSuite\ServiceSuite.csproj", "{20273F0B-027F-46AE-96E3-F6FE6BAEAACB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{96A2C158-6324-49F1-8FFB-C1EB4C57D9FB}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
