@@ -47,6 +47,11 @@ namespace ServiceSuite.Data.Contexts
             {
                 b.ToTable("ApplicationUser");
 
+                b.HasMany(e => e.ApplicationUserTeams)
+                    .WithOne()
+                    .HasForeignKey(ut => ut.ApplicationUserId)
+                    .IsRequired();
+
                 // Each User can have many UserClaims
                 b.HasMany(e => e.Claims)
                     .WithOne()
@@ -72,6 +77,11 @@ namespace ServiceSuite.Data.Contexts
                     .IsRequired();
             });
 
+            modelBuilder.Entity<ApplicationUserTeam>(b =>
+            {
+                b.HasKey(e => new { e.ApplicationUserId, e.TeamId });
+            });
+
             modelBuilder.Entity<ApplicationRole>(b =>
             {
                 b.ToTable("ApplicationRole");
@@ -89,6 +99,14 @@ namespace ServiceSuite.Data.Contexts
                     .IsRequired();
             });
 
+            modelBuilder.Entity<Team>(b =>
+            {
+                b.HasMany(e => e.ApplicationUserTeams)
+                    .WithOne()
+                    .HasForeignKey(ut => ut.TeamId)
+                    .IsRequired();
+            });
+
             modelBuilder.Entity<TicketChangeLog>(b =>
             {
                 b.HasKey(x => new { x.ChangeKey, x.TicketId });
@@ -97,6 +115,10 @@ namespace ServiceSuite.Data.Contexts
 
         // Custom Entities
         public DbSet<ApplicationEnum> ApplicationEnums { get; set; }
+
+        public DbSet<ApplicationUserTeam> ApplicationUserTeams { get; set; }
+
+        public DbSet<Team> Teams { get; set; }
 
         public DbSet<Ticket> Tickets { get; set; }
 

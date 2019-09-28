@@ -12,5 +12,7 @@ namespace ServiceSuite.Data.Models
         public virtual ICollection<IdentityUserToken<int>> Tokens { get; set; }
 
         public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
+
+        public virtual ICollection<ApplicationUserTeam> ApplicationUserTeams { get; set; }
     }
 }
