@@ -1,40 +1,56 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ServiceSuite.Data.Contexts;
 using ServiceSuite.Data.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ServiceSuite.Services
 {
     public class UserService
     {
-        private readonly MainContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public UserService(MainContext context, UserManager<ApplicationUser> userManager)
+        public UserService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
-            _context = context;
             _userManager = userManager;
-
+            _roleManager = roleManager;
             GenerateDefaultUser().GetAwaiter().GetResult();
         }
 
+        public async Task InitializeUsers()
+        {
+            using (var context = new MainContextFactory().CreateDbContext())
+            {
+                var userCount = context.Users.Select(x => 1).Count();
 
+                if (userCount == 0)
+                {
+                    await GenerateDefaultUser();
+                }
+            }
+        }
 
         private async Task GenerateDefaultUser()
         {
-            var userCount = _context.Users.Select(x => 1).Count();
-
-            if (userCount == 0)
+            // Create Role
+            var role = new ApplicationRole()
             {
-                var user = new ApplicationUser();
+                Name = "System Administrator"
+            };
 
-                await _userManager.CreateAsync(user, "Password123!");
-            }
+            var createdRole = await _roleManager.CreateAsync(role);
+
+            // Create User
+            var user = new ApplicationUser()
+            {
+                UserName = "Administrator"
+            };
+
+            var createdUser = await _userManager.CreateAsync(user, "Password123!");
+
+            // Add User to Role
+            await _userManager.AddToRoleAsync(user, "System Administrator");
         }
     }
 }
