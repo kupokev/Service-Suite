@@ -1,11 +1,9 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace ServiceSuite.Data.Models
 {
-    public class Ticket
+    public class Ticket : BaseEntity
     {
-        [Key]
         public int TicketId { get; set; }
 
         public int Priority { get; set; }
@@ -17,11 +15,7 @@ namespace ServiceSuite.Data.Models
         public string Description { get; set; }
 
         public int? AssignedUserId { get; set; }
-
-        public int CreatedById { get; set; }
-
-        public DateTime? CreatedDate { get; set; }
-
+        
         public DateTime? DueDate { get; set; }
     }
 }

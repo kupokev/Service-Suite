@@ -15,6 +15,7 @@ namespace ServiceSuite.Services
         {
             _userManager = userManager;
             _roleManager = roleManager;
+
             GenerateDefaultUser().GetAwaiter().GetResult();
         }
 

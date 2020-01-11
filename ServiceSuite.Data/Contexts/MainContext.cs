@@ -107,6 +107,16 @@ namespace ServiceSuite.Data.Contexts
                     .IsRequired();
             });
 
+            modelBuilder.Entity<Ticket>(b =>
+            {
+                b.HasKey(x => new { x.TicketId });
+            });
+
+            modelBuilder.Entity<TicketActivity>(b =>
+            {
+                b.HasKey(x => new { x.TicketActivityId });
+            });
+
             modelBuilder.Entity<TicketChangeLog>(b =>
             {
                 b.HasKey(x => new { x.ChangeKey, x.TicketId });
