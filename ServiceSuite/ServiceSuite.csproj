@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServicePortal.Data\ServiceSuite.Data.csproj" />
+    <ProjectReference Include="..\ServiceSuite.Data\ServiceSuite.Data.csproj" />
   </ItemGroup>
 
 </Project>

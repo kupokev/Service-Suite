@@ -10,7 +10,7 @@ using ServiceSuite.Data.Contexts;
 namespace ServiceSuite.Data.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20190927035906_Initial")]
+    [Migration("20200111182059_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

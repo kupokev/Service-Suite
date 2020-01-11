@@ -8,14 +8,10 @@ namespace ServiceSuite.Services
 {
     public class EnumService : IEnumService
     {
-        private readonly MainContext _context;
-
         private List<ApplicationEnumDto> _enums { get; set; }
 
-        public EnumService(MainContext context)
+        public EnumService()
         {
-            _context = context;
-
             // Generate list when app is launched
             Refresh();
         }
@@ -29,19 +25,22 @@ namespace ServiceSuite.Services
         {
             try
             {
-                _enums = _context.ApplicationEnums
-                    .Select(x => new ApplicationEnumDto()
-                    {
-                        ApplicationEnumId = x.ApplicationEnumId,
-                        Category = x.Category,
-                        Name = x.Name,
-                        SubCategory = x.SubCategory,
-                        Value = x.Value,
-                        ValueType = x.ValueType
-                    })
-                    .ToList();
+                using (var context = new MainContextFactory().CreateDbContext())
+                {
+                    _enums = context.ApplicationEnums
+                        .Select(x => new ApplicationEnumDto()
+                        {
+                            ApplicationEnumId = x.ApplicationEnumId,
+                            Category = x.Category,
+                            Name = x.Name,
+                            SubCategory = x.SubCategory,
+                            Value = x.Value,
+                            ValueType = x.ValueType
+                        })
+                        .ToList();
 
-                _enums.AddRange(GenerateEnums());
+                    _enums.AddRange(GenerateEnums());
+                }
 
                 return true;
             }
@@ -49,7 +48,7 @@ namespace ServiceSuite.Services
             {
                 return false;
             }
-            
+
         }
 
         private IEnumerable<ApplicationEnumDto> GenerateEnums()
