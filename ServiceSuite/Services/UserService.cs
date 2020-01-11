@@ -1,57 +1,56 @@
-﻿using Microsoft.AspNetCore.Identity;
-using ServiceSuite.Data.Contexts;
-using ServiceSuite.Data.Models;
+﻿using ServiceSuite.Data.Contexts;
+using ServiceSuite.Interfaces;
+using ServiceSuite.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServiceSuite.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
+        private List<UserDto> _users;
 
-        public UserService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public UserService()
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-
-            GenerateDefaultUser().GetAwaiter().GetResult();
+            InitializeUsers();
+            RefreshUsers();
         }
 
-        public async Task InitializeUsers()
+        /// <summary>
+        /// Retrives all active users
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<UserDto>> GetActiveUsers() => await Task.FromResult(_users.Where(x => x.IsActive).ToList());
+
+        /// <summary>
+        /// Retrieves all active and non-active users
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<UserDto>> GetUsers() => await Task.FromResult(_users.ToList());
+
+        private void InitializeUsers()
         {
             using (var context = new MainContextFactory().CreateDbContext())
             {
-                var userCount = context.Users.Select(x => 1).Count();
+                var defaultAdmin = context.Users.FirstOrDefault(x => x.Id == 1);
 
-                if (userCount == 0)
-                {
-                    await GenerateDefaultUser();
-                }
+                // TODO: Figure out how to create a default user using the ApplicationUserService
             }
         }
 
-        private async Task GenerateDefaultUser()
+        private void RefreshUsers()
         {
-            // Create Role
-            var role = new ApplicationRole()
+            using (var context = new MainContextFactory().CreateDbContext())
             {
-                Name = "System Administrator"
-            };
-
-            var createdRole = await _roleManager.CreateAsync(role);
-
-            // Create User
-            var user = new ApplicationUser()
-            {
-                UserName = "Administrator"
-            };
-
-            var createdUser = await _userManager.CreateAsync(user, "Password123!");
-
-            // Add User to Role
-            await _userManager.AddToRoleAsync(user, "System Administrator");
+                _users = context.Users
+                    .Select(x => new UserDto()
+                    {
+                        UserId = x.Id,
+                        Username = x.UserName
+                    })
+                    .ToList();
+            }
         }
     }
 }

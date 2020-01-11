@@ -43,9 +43,10 @@ namespace ServicePortal
 
             // Core services
             services.AddTransient<IApplicationEnumService, ApplicationEnumService>();
+            services.AddTransient<IApplicationUserService, ApplicationUserService>();
             services.AddTransient<IContextUserService, ContextUserService>();
             services.AddSingleton<IEnumService, EnumService>();
-            
+            services.AddSingleton<IUserService, UserService>();
 
             // Helpdesk Services
 
