@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ServiceSuite.Data.Extensions;
 using ServiceSuite.Data.Models;
 
 namespace ServiceSuite.Data.Contexts
@@ -15,6 +16,8 @@ namespace ServiceSuite.Data.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.RemovePluralizingTableNameConvention();
 
             // Rename Identity Model Tables
             modelBuilder.Entity<IdentityUserClaim<int>>(b =>
@@ -102,6 +105,9 @@ namespace ServiceSuite.Data.Contexts
             modelBuilder.Entity<Project>(b =>
             {
                 b.HasKey(x => new { x.ProjectId });
+
+                b.Property(x => x.Description).HasMaxLength(512);
+                b.Property(x => x.Name).HasMaxLength(128);
             });
 
             modelBuilder.Entity<ProjectUser>(b =>
@@ -115,21 +121,32 @@ namespace ServiceSuite.Data.Contexts
                     .WithOne()
                     .HasForeignKey(ut => ut.TeamId)
                     .IsRequired();
+
+                b.Property(x => x.Description).HasMaxLength(512);
+                b.Property(x => x.Name).HasMaxLength(128);
             });
 
             modelBuilder.Entity<Ticket>(b =>
             {
                 b.HasKey(x => new { x.TicketId });
+
+                b.Property(x => x.Description).HasMaxLength(512);
+                b.Property(x => x.Name).HasMaxLength(128);
             });
 
             modelBuilder.Entity<TicketActivity>(b =>
             {
                 b.HasKey(x => new { x.TicketActivityId });
+
+                b.Property(x => x.Comment).HasMaxLength(1024);
             });
 
             modelBuilder.Entity<TicketChangeLog>(b =>
             {
                 b.HasKey(x => new { x.ChangeKey, x.TicketId });
+
+                b.Property(x => x.Description).HasMaxLength(512);
+                b.Property(x => x.Name).HasMaxLength(128);
             });
         }
 

@@ -8,7 +8,7 @@ namespace ServiceSuite.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ApplicationEnums",
+                name: "ApplicationEnum",
                 columns: table => new
                 {
                     ApplicationEnumId = table.Column<int>(nullable: false)
@@ -21,7 +21,7 @@ namespace ServiceSuite.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationEnums", x => x.ApplicationEnumId);
+                    table.PrimaryKey("PK_ApplicationEnum", x => x.ApplicationEnumId);
                 });
 
             migrationBuilder.CreateTable(
@@ -66,7 +66,7 @@ namespace ServiceSuite.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Projects",
+                name: "Project",
                 columns: table => new
                 {
                     ProjectId = table.Column<int>(nullable: false)
@@ -74,64 +74,64 @@ namespace ServiceSuite.Data.Migrations
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     CreatedById = table.Column<int>(nullable: false),
                     ParentProjectId = table.Column<int>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 128, nullable: true),
+                    Description = table.Column<string>(maxLength: 512, nullable: true),
                     StartDate = table.Column<DateTime>(nullable: true),
                     DueDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Projects", x => x.ProjectId);
+                    table.PrimaryKey("PK_Project", x => x.ProjectId);
                     table.ForeignKey(
-                        name: "FK_Projects_Projects_ParentProjectId",
+                        name: "FK_Project_Project_ParentProjectId",
                         column: x => x.ParentProjectId,
-                        principalTable: "Projects",
+                        principalTable: "Project",
                         principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Teams",
+                name: "Team",
                 columns: table => new
                 {
                     TeamId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(maxLength: 128, nullable: true),
+                    Description = table.Column<string>(maxLength: 512, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Teams", x => x.TeamId);
+                    table.PrimaryKey("PK_Team", x => x.TeamId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketActivities",
+                name: "TicketActivity",
                 columns: table => new
                 {
                     TicketActivityId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     CreatedById = table.Column<int>(nullable: false),
-                    Comment = table.Column<string>(nullable: true),
+                    Comment = table.Column<string>(maxLength: 1024, nullable: true),
                     InternalComment = table.Column<bool>(nullable: false),
                     AssignedUserId = table.Column<int>(nullable: false),
                     MinutesLogged = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketActivities", x => x.TicketActivityId);
+                    table.PrimaryKey("PK_TicketActivity", x => x.TicketActivityId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TicketChangeLogs",
+                name: "TicketChangeLog",
                 columns: table => new
                 {
                     ChangeKey = table.Column<Guid>(nullable: false),
                     TicketId = table.Column<int>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
                     CategoryId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 128, nullable: true),
+                    Description = table.Column<string>(maxLength: 512, nullable: true),
                     AssignedUserId = table.Column<int>(nullable: true),
                     CreatedById = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: true),
@@ -143,7 +143,7 @@ namespace ServiceSuite.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TicketChangeLogs", x => new { x.ChangeKey, x.TicketId });
+                    table.PrimaryKey("PK_TicketChangeLog", x => new { x.ChangeKey, x.TicketId });
                 });
 
             migrationBuilder.CreateTable(
@@ -262,7 +262,7 @@ namespace ServiceSuite.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProjectUsers",
+                name: "ProjectUser",
                 columns: table => new
                 {
                     ProjectId = table.Column<int>(nullable: false),
@@ -270,15 +270,15 @@ namespace ServiceSuite.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectUsers", x => new { x.ProjectId, x.UserId });
+                    table.PrimaryKey("PK_ProjectUser", x => new { x.ProjectId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_ProjectUsers_Projects_ProjectId",
+                        name: "FK_ProjectUser_Project_ProjectId",
                         column: x => x.ProjectId,
-                        principalTable: "Projects",
+                        principalTable: "Project",
                         principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProjectUsers_ApplicationUser_UserId",
+                        name: "FK_ProjectUser_ApplicationUser_UserId",
                         column: x => x.UserId,
                         principalTable: "ApplicationUser",
                         principalColumn: "Id",
@@ -286,7 +286,7 @@ namespace ServiceSuite.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tickets",
+                name: "Ticket",
                 columns: table => new
                 {
                     TicketId = table.Column<int>(nullable: false)
@@ -296,24 +296,24 @@ namespace ServiceSuite.Data.Migrations
                     ProjectId = table.Column<int>(nullable: true),
                     Priority = table.Column<int>(nullable: false),
                     CategoryId = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 128, nullable: true),
+                    Description = table.Column<string>(maxLength: 512, nullable: true),
                     AssignedUserId = table.Column<int>(nullable: true),
                     DueDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tickets", x => x.TicketId);
+                    table.PrimaryKey("PK_Ticket", x => x.TicketId);
                     table.ForeignKey(
-                        name: "FK_Tickets_Projects_ProjectId",
+                        name: "FK_Ticket_Project_ProjectId",
                         column: x => x.ProjectId,
-                        principalTable: "Projects",
+                        principalTable: "Project",
                         principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationUserTeams",
+                name: "ApplicationUserTeam",
                 columns: table => new
                 {
                     ApplicationUserId = table.Column<int>(nullable: false),
@@ -325,29 +325,29 @@ namespace ServiceSuite.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationUserTeams", x => new { x.ApplicationUserId, x.TeamId });
+                    table.PrimaryKey("PK_ApplicationUserTeam", x => new { x.ApplicationUserId, x.TeamId });
                     table.ForeignKey(
-                        name: "FK_ApplicationUserTeams_ApplicationUser_ApplicationUserId",
+                        name: "FK_ApplicationUserTeam_ApplicationUser_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "ApplicationUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserTeams_ApplicationUser_ApplicationUserId1",
+                        name: "FK_ApplicationUserTeam_ApplicationUser_ApplicationUserId1",
                         column: x => x.ApplicationUserId1,
                         principalTable: "ApplicationUser",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserTeams_Teams_TeamId",
+                        name: "FK_ApplicationUserTeam_Team_TeamId",
                         column: x => x.TeamId,
-                        principalTable: "Teams",
+                        principalTable: "Team",
                         principalColumn: "TeamId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ApplicationUserTeams_Teams_TeamId1",
+                        name: "FK_ApplicationUserTeam_Team_TeamId1",
                         column: x => x.TeamId1,
-                        principalTable: "Teams",
+                        principalTable: "Team",
                         principalColumn: "TeamId",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -397,40 +397,40 @@ namespace ServiceSuite.Data.Migrations
                 column: "UserId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserTeams_ApplicationUserId1",
-                table: "ApplicationUserTeams",
+                name: "IX_ApplicationUserTeam_ApplicationUserId1",
+                table: "ApplicationUserTeam",
                 column: "ApplicationUserId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserTeams_TeamId",
-                table: "ApplicationUserTeams",
+                name: "IX_ApplicationUserTeam_TeamId",
+                table: "ApplicationUserTeam",
                 column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserTeams_TeamId1",
-                table: "ApplicationUserTeams",
+                name: "IX_ApplicationUserTeam_TeamId1",
+                table: "ApplicationUserTeam",
                 column: "TeamId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_ParentProjectId",
-                table: "Projects",
+                name: "IX_Project_ParentProjectId",
+                table: "Project",
                 column: "ParentProjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectUsers_UserId",
-                table: "ProjectUsers",
+                name: "IX_ProjectUser_UserId",
+                table: "ProjectUser",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_ProjectId",
-                table: "Tickets",
+                name: "IX_Ticket_ProjectId",
+                table: "Ticket",
                 column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApplicationEnums");
+                name: "ApplicationEnum");
 
             migrationBuilder.DropTable(
                 name: "ApplicationRoleClaim");
@@ -445,34 +445,34 @@ namespace ServiceSuite.Data.Migrations
                 name: "ApplicationUserRole");
 
             migrationBuilder.DropTable(
-                name: "ApplicationUserTeams");
+                name: "ApplicationUserTeam");
 
             migrationBuilder.DropTable(
                 name: "ApplicationUserToken");
 
             migrationBuilder.DropTable(
-                name: "ProjectUsers");
+                name: "ProjectUser");
 
             migrationBuilder.DropTable(
-                name: "TicketActivities");
+                name: "Ticket");
 
             migrationBuilder.DropTable(
-                name: "TicketChangeLogs");
+                name: "TicketActivity");
 
             migrationBuilder.DropTable(
-                name: "Tickets");
+                name: "TicketChangeLog");
 
             migrationBuilder.DropTable(
                 name: "ApplicationRole");
 
             migrationBuilder.DropTable(
-                name: "Teams");
+                name: "Team");
 
             migrationBuilder.DropTable(
                 name: "ApplicationUser");
 
             migrationBuilder.DropTable(
-                name: "Projects");
+                name: "Project");
         }
     }
 }

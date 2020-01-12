@@ -10,7 +10,7 @@ using ServiceSuite.Data.Contexts;
 namespace ServiceSuite.Data.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20200112010057_Initial")]
+    [Migration("20200112020243_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,7 +154,7 @@ namespace ServiceSuite.Data.Migrations
 
                     b.HasKey("ApplicationEnumId");
 
-                    b.ToTable("ApplicationEnums");
+                    b.ToTable("ApplicationEnum");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationRole", b =>
@@ -281,7 +281,7 @@ namespace ServiceSuite.Data.Migrations
 
                     b.HasIndex("TeamId1");
 
-                    b.ToTable("ApplicationUserTeams");
+                    b.ToTable("ApplicationUserTeam");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.Project", b =>
@@ -298,13 +298,15 @@ namespace ServiceSuite.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(512)")
+                        .HasMaxLength(512);
 
                     b.Property<DateTime?>("DueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<int?>("ParentProjectId")
                         .HasColumnType("int");
@@ -316,7 +318,7 @@ namespace ServiceSuite.Data.Migrations
 
                     b.HasIndex("ParentProjectId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Project");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.ProjectUser", b =>
@@ -331,7 +333,7 @@ namespace ServiceSuite.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ProjectUsers");
+                    b.ToTable("ProjectUser");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.Team", b =>
@@ -342,14 +344,16 @@ namespace ServiceSuite.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(512)")
+                        .HasMaxLength(512);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.HasKey("TeamId");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Team");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.Ticket", b =>
@@ -372,13 +376,15 @@ namespace ServiceSuite.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(512)")
+                        .HasMaxLength(512);
 
                     b.Property<DateTime?>("DueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<int>("Priority")
                         .HasColumnType("int");
@@ -390,7 +396,7 @@ namespace ServiceSuite.Data.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Ticket");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.TicketActivity", b =>
@@ -404,7 +410,8 @@ namespace ServiceSuite.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(1024)")
+                        .HasMaxLength(1024);
 
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
@@ -420,7 +427,7 @@ namespace ServiceSuite.Data.Migrations
 
                     b.HasKey("TicketActivityId");
 
-                    b.ToTable("TicketActivities");
+                    b.ToTable("TicketActivity");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.TicketChangeLog", b =>
@@ -450,13 +457,15 @@ namespace ServiceSuite.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(512)")
+                        .HasMaxLength(512);
 
                     b.Property<DateTime?>("DueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
@@ -469,7 +478,7 @@ namespace ServiceSuite.Data.Migrations
 
                     b.HasKey("ChangeKey", "TicketId");
 
-                    b.ToTable("TicketChangeLogs");
+                    b.ToTable("TicketChangeLog");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationRoleClaim", b =>
