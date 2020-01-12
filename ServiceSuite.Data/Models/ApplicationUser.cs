@@ -14,5 +14,7 @@ namespace ServiceSuite.Data.Models
         public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
 
         public virtual ICollection<ApplicationUserTeam> ApplicationUserTeams { get; set; }
+
+        public virtual ICollection<ProjectUser> ProjectUsers { get; set; }
     }
 }

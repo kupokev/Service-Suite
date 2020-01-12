@@ -6,6 +6,10 @@ namespace ServiceSuite.Data.Models
     {
         public int TicketId { get; set; }
 
+        public int? ProjectId { get; set; }
+
+        public virtual Project Parent { get; set; }
+
         public int Priority { get; set; }
 
         public int CategoryId { get; set; }

@@ -282,6 +282,56 @@ namespace ServiceSuite.Data.Migrations
                     b.ToTable("ApplicationUserTeams");
                 });
 
+            modelBuilder.Entity("ServiceSuite.Data.Models.Project", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProjectId");
+
+                    b.HasIndex("ParentProjectId");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.ProjectUser", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProjectUsers");
+                });
+
             modelBuilder.Entity("ServiceSuite.Data.Models.Team", b =>
                 {
                     b.Property<int>("TeamId")
@@ -331,7 +381,12 @@ namespace ServiceSuite.Data.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("int");
+
                     b.HasKey("TicketId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Tickets");
                 });
@@ -363,7 +418,7 @@ namespace ServiceSuite.Data.Migrations
 
                     b.HasKey("TicketActivityId");
 
-                    b.ToTable("TicketActivity");
+                    b.ToTable("TicketActivities");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.TicketChangeLog", b =>
@@ -486,6 +541,35 @@ namespace ServiceSuite.Data.Migrations
                     b.HasOne("ServiceSuite.Data.Models.Team", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId1");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.Project", b =>
+                {
+                    b.HasOne("ServiceSuite.Data.Models.Project", "ParentProject")
+                        .WithMany("ChildProjects")
+                        .HasForeignKey("ParentProjectId");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.ProjectUser", b =>
+                {
+                    b.HasOne("ServiceSuite.Data.Models.Project", "Project")
+                        .WithMany("ProjectUsers")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationUser", "User")
+                        .WithMany("ProjectUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.Ticket", b =>
+                {
+                    b.HasOne("ServiceSuite.Data.Models.Project", "Parent")
+                        .WithMany("Tickets")
+                        .HasForeignKey("ProjectId");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationRoleClaim", b =>

@@ -99,6 +99,16 @@ namespace ServiceSuite.Data.Contexts
                     .IsRequired();
             });
 
+            modelBuilder.Entity<Project>(b =>
+            {
+                b.HasKey(x => new { x.ProjectId });
+            });
+
+            modelBuilder.Entity<ProjectUser>(b =>
+            {
+                b.HasKey(x => new { x.ProjectId, x.UserId });
+            });
+
             modelBuilder.Entity<Team>(b =>
             {
                 b.HasMany(e => e.ApplicationUserTeams)
@@ -128,9 +138,15 @@ namespace ServiceSuite.Data.Contexts
 
         public DbSet<ApplicationUserTeam> ApplicationUserTeams { get; set; }
 
+        public DbSet<Project> Projects { get; set; }
+
+        public DbSet<ProjectUser> ProjectUsers { get; set; }
+
         public DbSet<Team> Teams { get; set; }
 
         public DbSet<Ticket> Tickets { get; set; }
+
+        public DbSet<TicketActivity> TicketActivities { get; set; }
 
         public DbSet<TicketChangeLog> TicketChangeLogs { get; set; }
     }

@@ -10,7 +10,7 @@ using ServiceSuite.Data.Contexts;
 namespace ServiceSuite.Data.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20200111182059_Initial")]
+    [Migration("20200112010057_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,6 +253,105 @@ namespace ServiceSuite.Data.Migrations
                     b.ToTable("ApplicationUser");
                 });
 
+            modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationUserTeam", b =>
+                {
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ApplicationUserId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TeamId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("ApplicationUserId", "TeamId");
+
+                    b.HasIndex("ApplicationUserId1");
+
+                    b.HasIndex("TeamId");
+
+                    b.HasIndex("TeamId1");
+
+                    b.ToTable("ApplicationUserTeams");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.Project", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProjectId");
+
+                    b.HasIndex("ParentProjectId");
+
+                    b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.ProjectUser", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProjectUsers");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.Team", b =>
+                {
+                    b.Property<int>("TeamId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TeamId");
+
+                    b.ToTable("Teams");
+                });
+
             modelBuilder.Entity("ServiceSuite.Data.Models.Ticket", b =>
                 {
                     b.Property<int>("TicketId")
@@ -269,7 +368,7 @@ namespace ServiceSuite.Data.Migrations
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -284,9 +383,44 @@ namespace ServiceSuite.Data.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("int");
+
                     b.HasKey("TicketId");
 
+                    b.HasIndex("ProjectId");
+
                     b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.TicketActivity", b =>
+                {
+                    b.Property<int>("TicketActivityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AssignedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("InternalComment")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MinutesLogged")
+                        .HasColumnType("int");
+
+                    b.HasKey("TicketActivityId");
+
+                    b.ToTable("TicketActivities");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.TicketChangeLog", b =>
@@ -386,6 +520,58 @@ namespace ServiceSuite.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationUserTeam", b =>
+                {
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationUser", null)
+                        .WithMany("ApplicationUserTeams")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId1");
+
+                    b.HasOne("ServiceSuite.Data.Models.Team", null)
+                        .WithMany("ApplicationUserTeams")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceSuite.Data.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId1");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.Project", b =>
+                {
+                    b.HasOne("ServiceSuite.Data.Models.Project", "ParentProject")
+                        .WithMany("ChildProjects")
+                        .HasForeignKey("ParentProjectId");
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.ProjectUser", b =>
+                {
+                    b.HasOne("ServiceSuite.Data.Models.Project", "Project")
+                        .WithMany("ProjectUsers")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceSuite.Data.Models.ApplicationUser", "User")
+                        .WithMany("ProjectUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ServiceSuite.Data.Models.Ticket", b =>
+                {
+                    b.HasOne("ServiceSuite.Data.Models.Project", "Parent")
+                        .WithMany("Tickets")
+                        .HasForeignKey("ProjectId");
                 });
 
             modelBuilder.Entity("ServiceSuite.Data.Models.ApplicationRoleClaim", b =>
