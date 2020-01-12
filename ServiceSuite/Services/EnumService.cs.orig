@@ -32,9 +32,28 @@ namespace ServiceSuite.Services
         {
             try
             {
+<<<<<<< HEAD
+                using (var context = new MainContextFactory().CreateDbContext())
+                {
+                    _enums = context.ApplicationEnums
+                        .Select(x => new ApplicationEnumDto()
+                        {
+                            ApplicationEnumId = x.ApplicationEnumId,
+                            Category = x.Category,
+                            Name = x.Name,
+                            SubCategory = x.SubCategory,
+                            Value = x.Value,
+                            ValueType = x.ValueType
+                        })
+                        .ToList();
+
+                    _enums.AddRange(GenerateEnums());
+                }
+=======
                 _enums = (await GetAsync()).ToList();
 
                 _enums.AddRange(await GenerateEnumsAsync());
+>>>>>>> develop
 
                 return true;
             }

@@ -21,7 +21,11 @@ namespace ServiceSuite.Data.Contexts
 
             if (Environment.MachineName.Equals("RKHDEV01", StringComparison.InvariantCultureIgnoreCase))
             {
+<<<<<<< HEAD
+                connectionString = configuration.GetConnectionString("Server=RKHSQL02;Database=ServicePortal;Trusted_Connection=True;MultipleActiveResultSets=true");
+=======
                 connectionString = "Server=RKHSQL02;Database=ServicePortal;Trusted_Connection=True;MultipleActiveResultSets=true";
+>>>>>>> develop
             }
             else
             {

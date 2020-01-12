@@ -5,11 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServiceSuite.Data\ServiceSuite.Data.csproj" />
+<<<<<<< HEAD
+=======
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+>>>>>>> develop
     <ProjectReference Include="..\ServiceSuite.Data\ServiceSuite.Data.csproj" />
   </ItemGroup>
 

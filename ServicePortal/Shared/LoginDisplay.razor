@@ -1,6 +1,9 @@
-﻿<AuthorizeView>
+﻿@using ServiceSuite.Interfaces
+@inject IContextUserService userService
+
+<AuthorizeView>
     <Authorized>
-        <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
+        <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name! @userId</a>
         <form method="post" action="Identity/Account/LogOut">
             <button type="submit" class="nav-link btn btn-link">Log out</button>
         </form>
@@ -10,3 +13,22 @@
         <a href="Identity/Account/Login">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
+
+@code {
+    string userId = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value
+        //System.Web
+        //context.User
+
+        var user = await userService.GetCurrentUser();
+
+        if (user != null)
+        {
+            userId = string.Format("({0})", user.UserId);
+        }
+    }
+}
