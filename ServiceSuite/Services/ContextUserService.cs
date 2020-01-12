@@ -26,6 +26,8 @@ namespace ServiceSuite.Services
 
         public async Task<UserDto> GetUserByName(string name)
         {
+            if (string.IsNullOrWhiteSpace(name)) return null;
+
             return await _context.Users.Where(x => x.UserName == name)
                     .Select(x => new UserDto()
                     {

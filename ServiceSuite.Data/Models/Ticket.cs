@@ -19,6 +19,8 @@ namespace ServiceSuite.Data.Models
         public string Description { get; set; }
 
         public int? AssignedUserId { get; set; }
+
+        public int StatusId { get; set; }
         
         public DateTime? DueDate { get; set; }
     }

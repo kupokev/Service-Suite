@@ -1,0 +1,57 @@
+﻿@page "/TicketList"
+
+@using ServiceSuite.Helpdesk.Interfaces
+@using ServiceSuite.Helpdesk.Models
+@using ServiceSuite.Interfaces
+
+@inject ITicketService TicketService
+@inject IContextUserService userService
+
+<h3>Ticket List</h3>
+
+@if (tickets == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Assignee</th>
+                <th>Creator</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in tickets)
+            {
+                <tr>
+                    <td>@ticket.TicketId.ToString()</td>
+                    <td>@ticket.Name</td>
+                    <td>@ticket.Assignee</td>
+                    <td>@ticket.CreatedBy</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    TicketDto[] tickets;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await userService.GetCurrentUser();
+
+        if (user == null)
+        {
+            tickets = new TicketDto[0];
+        }
+        else
+        {
+            tickets = await TicketService.GetByAssignee(user.UserId);
+        }
+    }
+}

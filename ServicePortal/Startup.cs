@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using ServicePortal.Areas.Identity;
 using ServiceSuite.Data.Contexts;
 using ServiceSuite.Data.Models;
+using ServiceSuite.Helpdesk.Interfaces;
+using ServiceSuite.Helpdesk.Services;
 using ServiceSuite.Interfaces;
 using ServiceSuite.Services;
 
@@ -46,6 +48,7 @@ namespace ServicePortal
             services.AddTransient<IApplicationUserService, ApplicationUserService>();
             services.AddTransient<IContextUserService, ContextUserService>();
             services.AddSingleton<IEnumService, EnumService>();
+            services.AddTransient<ITicketService, TicketService>();
             services.AddSingleton<IUserService, UserService>();
 
             // Helpdesk Services

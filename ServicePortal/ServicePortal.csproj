@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ServiceSuite.Data\ServiceSuite.Data.csproj" />
+    <ProjectReference Include="..\ServiceSuite.Helpdesk\ServiceSuite.Helpdesk.csproj" />
+    <ProjectReference Include="..\ServiceSuite.Project\ServiceSuite.Project.csproj" />
     <ProjectReference Include="..\ServiceSuite\ServiceSuite.csproj" />
   </ItemGroup>
 
